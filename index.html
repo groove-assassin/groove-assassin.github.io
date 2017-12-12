@@ -4,7 +4,7 @@
     <head>
         <title>FAST MUSIC ENTHUSIAST</title>
         
-                <style>
+            <style>
             body {
                 background: rgb(000, 000, 000);
                 background-image: url('https://web.archive.org/web/20090725223313/http://www.geocities.com/arielpurkey/starstwinkle.gif');
@@ -88,7 +88,6 @@
                 background-color: #ff00ff;
             }
     
-            /* main container area beneath menu */
             main {
                 background: rgb(000, 000, 000);
                 display: flex;
@@ -124,9 +123,26 @@
             [class=interests] header {
                 font-size: 1.25em;
             }
+            [class=container2] {
+                margin: 0 25%;
+                width: 620px;
+                flex: 1;
+                padding: 5px;
+            }
             
         </style>
     </head>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    
+    <script>
+        $(document).ready(function(){
+            $();
+        });
+        
+        //jquery fx : https://www.w3schools.com/jquery/jquery_events.asp and https://www.w3schools.com/jquery/jquery_ref_effects.asp //
+        
+    </script>
     
     <body>
            <nav>
@@ -160,6 +176,24 @@
 
                 </div>
             </main>
+            
+            <main class='container2'>
+                <div class= 'professional-content'>
+                    <header>Professional Interests</header>
+                    
+                        <section class="interests">
+                            
+                        <button>Use me to see my professional interests</button>
+                        
+                        <ul class="professional-interests">
+                            <li>JavaScript Web Development</li>
+                            <li>Data Science</li>
+                            <li>Analyzing data using Python</li>
+                        </ul>
+                    </section>
+                </div>
+            </main>
+            
         </div>
         <div id="extra-main">
             <main>
