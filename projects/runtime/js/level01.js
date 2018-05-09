@@ -21,11 +21,16 @@
                 {type: 'sawblade', x:3000, y:groundY},
                 {type: 'sawblade',x:3600,y:groundY},
                 {type: 'sawblade',x:4200,y:groundY},
-                {type: 'box',x:1200,y:groundY-50},
-                {type: 'enemy', x: 400, y: groundY-10},
-                {type: 'enemy', x: 800, y: groundY-50},
-                {type: 'enemy', x: 1200, y: groundY-100},
-                {type: 'collectable', x: 1400, y: groundY-100}
+                {type: 'box',x:2000,y:groundY-120},
+                {type: 'box', x:3200, y:groundY-120},
+                {type: 'box', x:6400, y:groundY-120},
+                {type: 'box', x:8600, y:groundY-120},
+                {type: 'enemy', x: 800, y: groundY-55},
+                {type: 'enemy', x: 1600, y: groundY-55},
+                {type: 'enemy', x: 2400, y: groundY-55},
+                {type: 'collectable', x: 1400, y: groundY-120},
+                {type: 'collectable', x: 1000, y: groundY-120},
+                {type: 'collectable', x: 2000, y: groundY-120}
             ]
         };
 
@@ -38,62 +43,64 @@
         
 //sawblade :
             var createSawBlade = function(x,y) {
-                var hitZoneSize = 25;
+                var hitZoneSize = 30;
                 var damageFromObstacle = 10;
                 var myObstacle = game.createObstacle(hitZoneSize,damageFromObstacle);
                     myObstacle.x = x;
                     myObstacle.y = y;
-                var obstacleImage = draw.bitmap('img/sawblade.png');
+                var obstacleImage = draw.bitmap('img/spikes.png');
                     myObstacle.addChild(obstacleImage);
-                    obstacleImage.x = -25;
-                    obstacleImage.y = -25;
-                    myObstacle.rotationVelocity = 100;
+                    obstacleImage.x = -42;
+                    obstacleImage.y = -38;
             
                 game.addGameItem(myObstacle);
+                
+                myObstacle.onPlayerCollision = function() {
+                    game.changeIntegrity(-10);
+                    myObstacle.fadeOut();
+                };
             };
             
-            for (var gameIndex = 0; gameIndex <= levelData.gameItems.length-1; gameIndex++) {
-                var gameItem = levelData.gameItems[gameIndex];
-                
-                if (gameItem.type === 'sawblade') {
-                    createSawBlade(gameItem.x,gameItem.y);
-                }
-            }
+            
         
 //extra obstacle :
         var createBox = function(x,y) {
             var hitZoneSize = 25;
-            var damageFromObstacle = 20;
+            var damageFromObstacle;
             var myObstacle = game.createObstacle(hitZoneSize, damageFromObstacle);
                 myObstacle.x = x;
                 myObstacle.y = y;
-            var obstacleImage = draw.rect(50, 50, 'blue');
+            var obstacleImage = draw.bitmap('img/ufo.png');
                 myObstacle.addChild(obstacleImage);
-                obstacleImage.x = -25;
-                obstacleImage.y = -25;
+                obstacleImage.x = -45;
+                obstacleImage.y = -15;
                 
             game.addGameItem(myObstacle);
+            
+            myObstacle.onPlayerCollision = function() {
+                game.changeIntegrity(-20);
+                myObstacle.fadeOut();
+            };
         };
         
-        if (gameItem.type === 'box') {
-            createBox(gameItem.x,gameItem.y);
-        }
+        
                 
 //enemy :
         function createEnemy (x,y) {
-            var enemy =  game.createGameItem('enemy',25);
+            var enemy =  game.createGameItem('enemy',30);
                 enemy.x = x;
                 enemy.y = y;
                 enemy.velocityX = -1;
-            var redSquare = draw.rect(50,50,'red');
-                redSquare.x = -25;
-                redSquare.y = -25;
+            var redSquare = draw.bitmap('img/alien.png');
+                redSquare.x = -39;
+                redSquare.y = -40;
             enemy.addChild(redSquare);
                 
             game.addGameItem(enemy);
             
             enemy.onPlayerCollision = function() {
-                game.changeIntegrity(-10);
+                game.changeIntegrity(-30);
+                enemy.fadeOut();
             };
             
             enemy.onProjectileCollision = function() {
@@ -102,9 +109,7 @@
             };
         }
         
-        if (gameItem.type === 'enemy') {
-            createEnemy(gameItem.x,gameItem.y);
-        }
+        
         
 //collectable :
         function createCollectable (x,y) {
@@ -112,21 +117,32 @@
                 collectable.x = x;
                 collectable.y = y;
                 collectable.velocityX = -1;
-            var goldSquare = draw.rect(25, 25, 'yellow');
+            var goldSquare = draw.bitmap('img/coin.png');
                 goldSquare.x = -12;
                 goldSquare.y = -12;
             collectable.addChild(goldSquare);
             
             game.addGameItem(collectable);
             
-            collectable.onProjectileCollision = function() {
+            collectable.onPlayerCollision = function() {
                 game.increaseScore(100);
+                game.changeIntegrity(+20);
                 collectable.fadeOut();
             };
         }
         
-        if (gameItem.type === 'collectable') {
-            createCollectable(gameItem.x,gameItem.y);
+        for (var gameIndex = 0; gameIndex <= levelData.gameItems.length-1; gameIndex++) {
+            var gameItem = levelData.gameItems[gameIndex];
+            
+            if (gameItem.type === 'sawblade') {
+                createSawBlade(gameItem.x,gameItem.y);
+            } else if (gameItem.type === 'box') {
+                createBox(gameItem.x,gameItem.y);
+            } else if (gameItem.type === 'enemy') {
+                createEnemy(gameItem.x,gameItem.y);
+            } else if (gameItem.type === 'collectable') {
+                createCollectable(gameItem.x,gameItem.y);
+            }
         }
 
     };

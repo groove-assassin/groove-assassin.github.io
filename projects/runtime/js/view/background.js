@@ -21,6 +21,8 @@
         var backgroundBox;
         var building;
         var buildings = [];
+        var bgmnt;
+        var bgmnts = [];
         
         // add objects for display inb ackground
         // called at the start of game and whenever the page is resized
@@ -35,7 +37,7 @@
             // TODO: 3 - YOUR DRAW CODE GOES HERE
             // you should modify this to suit your game
             
-            var backgroundFill = draw.rect(canvasWidth,groundY,'#61BEF3');
+            var backgroundFill = draw.rect(canvasWidth,groundY,'#0F0029');
             background.addChild(backgroundFill);
             
             backgroundBox = draw.rect(100,100,'Blue');
@@ -43,19 +45,29 @@
             backgroundBox.y = 382;
             //background.addChild(backgroundBox);
             
-            var grass = draw.rect(canvasWidth, groundY, '#2BBB0E', '#06A523', '3px');
+            var grass = draw.rect(canvasWidth, groundY, '#19005A', '#0F0029', '3px');
             grass.y = groundY;
             background.addChild(grass);
             
+            var bgmntHeight = 300;
+            
+            for(var i=0; i<=30; i++) {
+                bgmnt = draw.bitmap('img/bgmtn.png');
+                bgmnt.x = 225*i;
+                bgmnt.y = groundY-(bgmntHeight+30);
+                background.addChild(bgmnt);
+                bgmnts.push(bgmnt);
+            }
+            
             var buildingHeight = 300;
 
-            for(var i=0;i<5;++i) {
-                building = draw.rect(75,buildingHeight,'LightGray','Black',1);
-                building.x = 200*i;
-                building.y = groundY-buildingHeight;
+            for(var i=0;i<=50;i++) {
+                building = draw.bitmap('img/mtn.png');
+                building.x = 225*i;
+                building.y = groundY-(buildingHeight + 3);
                 background.addChild(building);
                 buildings.push(building);
-}
+            }
             
         }
         
@@ -72,10 +84,18 @@
                 backgroundBox.x = canvasWidth;
             }
             
+            for (var i = 0; i < bgmnts.length; i++) {
+                bgmnt = bgmnts[i];
+                bgmnt.x = bgmnt.x -0.5;
+                if(bgmnt.x < -250) {
+                    bgmnt.x = canvasWidth;
+                }
+            }
+            
             for (var i = 0; i < buildings.length; i++) {
                 building = buildings[i];
                 building.x = building.x - 1;
-                if(building.x < -100) {
+                if(building.x < -250) {
                     building.x = canvasWidth;
                 }
             }
